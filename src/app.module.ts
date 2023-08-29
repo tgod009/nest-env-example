@@ -5,14 +5,16 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as process from 'process';
 import { Neo4jModule } from './neo4j/neo4j.module';
 import { ManagementModule } from '@twirelab/nestjs-auth0';
+import configuration from "./config/configuration";
 
 console.log(`${process.cwd()}/config/env/${process.env.NODE_ENV}.env`);
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      ignoreEnvFile: true,
+      ignoreEnvFile: false,
       envFilePath: `${process.cwd()}/config/env/${process.env.NODE_ENV}.env`,
+      load: [configuration],
     }),
     Neo4jModule.forRootAsync({
       imports: [ConfigModule],
